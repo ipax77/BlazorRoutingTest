@@ -1,0 +1,38 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<div class="btn-group">
+    <button type="button" class="btn btn-primary" @onclick="SetParameter">Set Parameter</button>
+    <button type="button" class="btn btn-secondary" @onclick="Navigate">Navigate</button>
+</div>
+
+<div>
+    <p>Parameter: @Test</p>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? Test { get; set; }
+
+    void SetParameter()
+    {
+        Test = "Sommer";
+    }
+
+    void Navigate()
+    {
+        NavigationManager.NavigateTo(NavigationManager.GetUriWithQueryParameters("counter",
+            new Dictionary<string, object?>()
+                    {
+                    {"Test1", "Summer" },
+                    {"Test2", "Winter" },
+                    }
+        ));
+    }
+}

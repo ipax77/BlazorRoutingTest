@@ -1,0 +1,41 @@
+
+<h3>TestComponent</h3>
+
+<div>
+    <p>Test1: @TestRecord.Test1</p>
+    <p>Test2: @TestRecord.Test2</p>
+</div>
+
+<h4>OnParametersSet snapshot</h4>
+<div>
+    <p>Test1: @snapShot1.Test1</p>
+    <p>Test2: @snapShot1.Test2</p>
+</div>
+
+<h4>OnInitialized snapshot</h4>
+<div>
+    <p>Test1: @snapShot2.Test1</p>
+    <p>Test2: @snapShot2.Test2</p>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Pages.Counter.TestRecord TestRecord { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        snapShot1.Test1 = TestRecord.Test1;
+        snapShot2.Test2 = TestRecord.Test2;
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        snapShot2.Test1 = TestRecord.Test1;
+        snapShot2.Test2 = TestRecord.Test2;
+    }
+
+    Pages.Counter.TestRecord snapShot1 = new();
+    Pages.Counter.TestRecord snapShot2 = new();
+}

@@ -1,0 +1,75 @@
+﻿@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<div>
+    <p>SupplyParameterFromQuery Test1: @Test1</p>
+    <p>SupplyParameterFromQuery Test2: @Test2</p>
+    <p></p>
+    <p>OnParametersSet Test1: @testRecord1.Test1</p>
+    <p>OnParametersSet Test2: @testRecord1.Test2</p>
+    <p></p>
+    <p>OnInitialized Test1: @testRecord2.Test1</p>
+    <p>OnInitialized Test2: @testRecord2.Test2</p>
+</div>
+
+<div>
+    <h3>OnParametersSet</h3>
+    <TestComponent TestRecord="testRecord1" />
+
+    <h3>OnInitialized</h3>
+    <TestComponent TestRecord="testRecord2" />
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? Test1 { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? Test2 { get; set; }
+
+    TestRecord testRecord1 = new();
+    TestRecord testRecord2 = new();
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    protected override void OnParametersSet()
+    {
+        SetParameters1();
+        base.OnParametersSet();
+    }
+
+    protected override void OnInitialized()
+    {
+        SetParameters2();
+        base.OnInitialized();
+    }
+
+    void SetParameters1()
+    {
+        testRecord1.Test1 = Test1;
+        testRecord1.Test2 = Test2;
+    }
+
+    void SetParameters2()
+    {
+        testRecord2.Test1 = Test1;
+        testRecord2.Test2 = Test2;
+    }
+
+    public record TestRecord
+    {
+        public string? Test1 { get; set; }
+        public string? Test2 { get; set; }
+    }
+}
