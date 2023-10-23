@@ -1,0 +1,76 @@
+﻿@page "/wasmtest"
+@attribute [RenderModeInteractiveWebAssembly]
+@using System.Collections.Concurrent
+
+<div>
+    <button type="button" class="btn btn-primary" @onclick="e => StateHasChanged()">Refresh</button>
+</div>
+<div>
+    <p>Parameters: Test1: @Test1, Test2: @Test2</p>
+    @foreach (var ent in TestRecords)
+    {
+        <p>@ent.Key: Test1: @ent.Value.Test1, Test2: @ent.Value.Test2</p>
+    }
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? Test1 { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string? Test2 { get; set; }
+
+    public ConcurrentDictionary<string, TestRecord> TestRecords = new();
+
+    protected override void OnParametersSet()
+    {
+        SetRecord("OnParametersSet", Test1, Test2);
+        base.OnParametersSet();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        SetRecord("OnParametersSetAsync", Test1, Test2);
+        return base.OnParametersSetAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+        SetRecord("OnInitialized", Test1, Test2);
+        base.OnInitialized();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        SetRecord("OnInitializedAsync", Test1, Test2);
+        return base.OnInitializedAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            SetRecord("OnAfterRender", Test1, Test2);
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            SetRecord("OnAfterRenderAsync", Test1, Test2);
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    void SetRecord(string mode, string? test1, string? test2)
+    {
+        TestRecords.TryAdd(mode, new(test1, test2));
+    }
+
+    void Refresh()
+    {
+        StateHasChanged();
+    }
+}

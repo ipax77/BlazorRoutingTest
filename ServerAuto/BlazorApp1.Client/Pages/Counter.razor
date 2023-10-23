@@ -1,0 +1,49 @@
+﻿@page "/counter"
+@attribute [RenderModeInteractiveAuto]
+@inject NavigationManager NavigationManager
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" @onclick="NavigateToServer">NavigateToServer</button>
+        <button type="button" class="btn btn-secondary" @onclick="NavigateToWasm">NavigateToWasm</button>
+    </div>
+</div>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    void NavigateToServer()
+    {
+        NavigationManager.NavigateTo(NavigationManager.GetUriWithQueryParameters("servertest",
+            new Dictionary<string, object?>()
+                                {
+                            {"Test1", "Summer" },
+                            {"Test2", "Winter" },
+                                }
+            ));
+    }
+
+    void NavigateToWasm()
+    {
+        NavigationManager.NavigateTo(NavigationManager.GetUriWithQueryParameters("wasmtest",
+            new Dictionary<string, object?>()
+                                    {
+                            {"Test1", "Summer" },
+                            {"Test2", "Winter" },
+                                    }
+            ));
+    }
+}

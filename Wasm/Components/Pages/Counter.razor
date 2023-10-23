@@ -38,11 +38,6 @@
     TestRecord testRecord2 = new();
     private int currentCount = 0;
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-
     protected override void OnParametersSet()
     {
         SetParameters1();
@@ -71,5 +66,10 @@
     {
         public string? Test1 { get; set; }
         public string? Test2 { get; set; }
+    }
+
+    private void IncrementCount()
+    {
+        currentCount++;
     }
 }
